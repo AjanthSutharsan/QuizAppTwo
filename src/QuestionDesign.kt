@@ -10,10 +10,11 @@ class QuestionDesign
 {
     companion object
     {
-        fun show(questionNumber: Int, quizID: Int)
+        fun show(questionNumber: Int, quizID: Int, user: User)
         {
             val stage = Stage()
             val hbox = HBox()
+            hbox.style = MainMenu.BACKGROUND_COLOUR_STYLE
             val scene = Scene(hbox)
             stage.scene = scene
 
@@ -56,8 +57,8 @@ class QuestionDesign
                 val question = Question(-1, questionName.text, answerTexts[3].text, arrayListOf(answerTexts[0].text, answerTexts[1].text, answerTexts[2].text), quizID)
                 DBService.writeOneQuestion(question)
 
-                if (questionNumber != 10) show(questionNumber + 1, quizID)
-                else FinishedMaking.show()
+                if (questionNumber != 10) show(questionNumber + 1, quizID, user)
+                else FinishedMaking.show(user)
 
                 stage.close()
             }

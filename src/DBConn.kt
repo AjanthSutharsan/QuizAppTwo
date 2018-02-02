@@ -3,7 +3,9 @@ import com.jcraft.jsch.JSch
 import com.jcraft.jsch.Session
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.sql.ResultSet
 import java.util.*
+import javax.xml.transform.Result
 
 class DBConn(private val hostUser: String = "pi", private val hostPassword: String = "enumaEli_s", private val hostURL: String = "www.musicmanager.duckdns.org", private val dbUser: String = "root", private val dbPassword: String = "yagamiLigh_t", private val dbName: String = "QuizApplication")
 {

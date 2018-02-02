@@ -12,11 +12,17 @@ class MakeQuiz
 {
     companion object
     {
-        fun show()
+        fun show(user: User)
         {
             val stage = Stage()
+            stage.width = 1000.0
+            stage.height = 650.0
+            stage.isResizable = false
+
             val hbox = HBox()
             hbox.padding = Insets(15.0, 15.0, 15.0, 15.0)
+            hbox.style = MainMenu.BACKGROUND_COLOUR_STYLE
+
             val leftVBox = VBox()
             val rightVBox = VBox()
             hbox.children.addAll(leftVBox, rightVBox)
@@ -24,11 +30,15 @@ class MakeQuiz
             stage.scene = scene
 
             // user label
-            val userLabel = TextArea("ID: 62761\nName: Lelouch Lamperouge")
+            val userLabel = TextArea("ID: ${user.userID}\nName: ${user.firstName + " " + user.lastName}")
+            userLabel.isEditable = false
+            userLabel.setMaxSize(170.0, 45.0)
             leftVBox.children.add(userLabel)
 
             // quiz title const label
             val quizTitleLabel = TextField("Quiz title: \t")
+            quizTitleLabel.isEditable = false
+            quizTitleLabel.maxWidth = 45.0
             leftVBox.children.add(quizTitleLabel)
 
             // image
@@ -45,7 +55,7 @@ class MakeQuiz
             val nextButton = Button("Next!")
             nextButton.setOnAction {
                 DBService.writeQuizTitle(Quiz(-1, quizName.text))
-                QuestionDesign.show(1, DBService.nextQuizID()); stage.close()
+                QuestionDesign.show(1, DBService.nextQuizID(), user); stage.close()
             }
             rightVBox.children.add(nextButton)
 

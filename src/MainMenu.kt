@@ -13,7 +13,8 @@ class MainMenu
 {
     companion object
     {
-        fun show()
+        val BACKGROUND_COLOUR_STYLE = "-fx-background: #ffb347"
+        fun show(user: User)
         {
             val stage = Stage()
             stage.width = 1000.0
@@ -22,6 +23,7 @@ class MainMenu
 
             // set up
             val hbox = HBox()
+            hbox.style = BACKGROUND_COLOUR_STYLE
             hbox.padding = Insets(15.0, 15.0, 15.0, 15.0)
             hbox.spacing = 100.0
 
@@ -41,7 +43,7 @@ class MainMenu
             hbox.children.add(rightVBox)
 
             // user label
-            val userLabel = TextArea("ID: 62761\nName: Lelouch Lamperouge")
+            val userLabel = TextArea("ID: ${user.userID}\nName: ${user.firstName + " " + user.lastName}")
             userLabel.isEditable = false
             userLabel.setMaxSize(170.0, 45.0)
             leftVBox.children.add(userLabel)
@@ -51,13 +53,14 @@ class MainMenu
             // PADDING
             (0 until 22).forEach {
                 val padding = Label("")
+                padding.style = BACKGROUND_COLOUR_STYLE
                 leftVBox.children.add(padding)
             }
-            val STYLE = "-fx-alignment: CENTER;"
+            val STYLE = "-fx-alignment: CENTER; -fx-accent: #d8eeff; -fx-focus-color: #6cd4f4;"
             val makeQuizButton = Button("Make a quiz!")
             makeQuizButton.style = STYLE
             makeQuizButton.setMinSize(250.0, 150.0)
-            makeQuizButton.setOnAction { MakeQuiz.show(); stage.close() }
+            makeQuizButton.setOnAction { MakeQuiz.show(user); stage.close() }
             makeQuizButton.alignment = Pos.BOTTOM_LEFT
             leftVBox.children.add(makeQuizButton)
 
@@ -66,8 +69,6 @@ class MainMenu
             image.fitHeight = 250.1
             image.fitWidth = 250.1
             middleVBox.children.add(image)
-
-            //
 
             // play a quiz button
 
@@ -78,6 +79,7 @@ class MainMenu
             }
             val playQuizButton = Button("Play a quiz!")
             playQuizButton.style = STYLE
+            playQuizButton.setOnAction { SearchForQuiz.show(user); stage.close() }
             playQuizButton.setMinSize(250.0, 150.0)
             middleVBox.children.add(playQuizButton)
 
@@ -95,6 +97,7 @@ class MainMenu
             logOutButton.alignment = Pos.TOP_RIGHT
             logOutButton.style = STYLE
             logOutButton.setMinSize(100.0, 80.0)
+            logOutButton.setOnAction { stage.close() }
             padddingHBox.children.add(logOutButton)
 
             // view highscores button
@@ -104,6 +107,7 @@ class MainMenu
                 rightVBox.children.add(padding)
             }
             val viewHighscoresButton = Button("View highscores!")
+            viewHighscoresButton.setOnAction { ViewHighScores.show(user) }
             viewHighscoresButton.style = STYLE
             viewHighscoresButton.setMinSize(250.0, 150.0)
             rightVBox.children.add(viewHighscoresButton)

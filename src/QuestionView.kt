@@ -14,12 +14,13 @@ class QuestionView
     {
         private var runningTotal = 0
 
-        fun show(questionIndex: Int, questions: ArrayList<Question>)
+        fun show(questionIndex: Int, questions: ArrayList<Question>, user: User, quizID: Int)
         {
             val question = questions[questionIndex]
 
             val stage = Stage()
             val hbox = HBox()
+            hbox.style = MainMenu.BACKGROUND_COLOUR_STYLE
             val scene = Scene(hbox)
             stage.scene = scene
 
@@ -29,10 +30,12 @@ class QuestionView
 
             // user label
             val userLabel = TextArea("ID: 62761 \nName: Lelouch Lamperouge")
+            userLabel.isEditable = false
+            userLabel.setMaxSize(170.0, 45.0)
             leftVBox.children.add(userLabel)
 
             // question number
-            val questionNumberLabel = TextField("Question #$questionIndex")
+            val questionNumberLabel = TextField("Question #${questionIndex + 1}")
             leftVBox.children.add(questionNumberLabel)
 
 
@@ -49,22 +52,27 @@ class QuestionView
             question.incorrectAnswers.forEach { answerNames += it }
             Collections.shuffle(answerNames)
 
-            var viewQuestionNext = false
-            var answerCorrect = false
-
-
-            fun showNextQuestion()
+            fun showNextQuestion(isCorrect: Boolean)
             {
-                if (answerCorrect) runningTotal++
-                if (questionIndex + 1 != 10) show(questionIndex + 1, questions)
-                stage.close()
+                if (isCorrect) runningTotal++
+                if (questionIndex + 1 < questions.size) // if there is a next question to show
+                {
+                    show(questionIndex + 1, questions, user, quizID)
+                    stage.close()
+                }
+                else { FinishedPlaying.show(user, runningTotal, quizID); stage.close() }
             }
 
-            answerNames.forEach {
-                val answerButton = Button(it)
+            var answerCorrect = false
+            var viewQuestionNext = false
+
+            answerNames.forEach { answer
+            ->
+                val answerButton = Button(answer)
                 answerButton.setOnAction {
-                    answerCorrect = answerButton.text == question.correctAnswer
-                    if (viewQuestionNext) showNextQuestion()
+                    answerCorrect = answer == question.correctAnswer
+
+                    if (viewQuestionNext) showNextQuestion(answerCorrect)
                     viewQuestionNext = true
                 }
                 rightVBox.children.add(answerButton)
@@ -72,8 +80,14 @@ class QuestionView
 
             // next button
             val nextButton = Button("Next")
-            nextButton.setOnAction { if (viewQuestionNext) showNextQuestion() else Alert(Alert.AlertType.ERROR, "You haven't submitted an answer yet").showAndWait() }
+            nextButton.setOnAction {
+                println(answerCorrect)
+                if (viewQuestionNext) showNextQuestion(answerCorrect)
+                else Alert(Alert.AlertType.ERROR, "You haven't submitted an answer yet").showAndWait()
+            }
             rightVBox.children.add(nextButton)
+
+            stage.show()
         }
 
 

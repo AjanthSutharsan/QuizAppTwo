@@ -6,11 +6,11 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
 
-class FinishedMaking
+class FinishedPlaying
 {
     companion object
     {
-        fun show(user: User)
+        fun show(user: User, totalScore: Int, quizID: Int)
         {
             val stage = Stage()
             stage.width = 1000.0
@@ -29,8 +29,9 @@ class FinishedMaking
             vbox.children.add(image)
 
             // explanatory label
-            val label = TextArea("You have finished making your quiz! \nWould you like to return to the main menu?")
+            val label = TextArea("You have finished the quiz!\nYour score was $totalScore / 10 \nWould you like to return to the main menu?")
             vbox.children.add(label)
+
 
             // yes/no hbox
             val hbox = HBox()
@@ -48,6 +49,8 @@ class FinishedMaking
             val noButton = Button("No!")
             noButton.setOnAction { stage.close() }
             vbox.children.add(noButton)
+
+            DBService.saveScoreToDatabase(user, quizID, totalScore)
 
             stage.show()
         }

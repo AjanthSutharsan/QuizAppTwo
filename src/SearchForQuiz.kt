@@ -11,7 +11,7 @@ class SearchForQuiz
 {
     companion object
     {
-        fun show()
+        fun show(user: User)
         {
             val stage = Stage()
             val vbox = VBox()
@@ -24,25 +24,50 @@ class SearchForQuiz
             image.fitWidth = 100.1
             vbox.children.add(image)
 
-            // search bar
-            val searchBar = TextField("Search me boiii")
-            vbox.children.add(searchBar)
+            val listView = ListView<Quiz>()
+            fun showQuestionsInQuiz(user: User)
+            {
+                if (listView.selectionModel.selectedIndex < listView.items.size)
+                {
+                    val quiz = listView.selectionModel.selectedItem
+                    QuestionView.show(0, DBService.questionsFromQuiz(quiz), user, quiz.quizID)
+                    stage.close()
+                }
+            }
 
             // list view
-            val listView = ListView(FXCollections.observableArrayList(arrayListOf("")))
+            val allSortedQuizzes = FXCollections.observableArrayList(DBService.allSortedQuizzes())
+            listView.items = FXCollections.observableArrayList(DBService.allSortedQuizzes())
+            var playQuizNext = false
+            listView.selectionModel.selectedItemProperty().addListener { _, _, _ ->
+                if (playQuizNext) showQuestionsInQuiz(user)
+                else playQuizNext = true
+            }
             vbox.children.add(listView)
+
+            // search bar
+            val searchBar = TextField("Search me boiii")
+            searchBar.textProperty().addListener { _, _, searchText
+            ->
+                val searchTrimmed = searchText.trim().toLowerCase()
+                if (searchTrimmed.isNotBlank())
+                {
+                    listView.items.clear()
+                    allSortedQuizzes.forEach { if (it.toString().toLowerCase().contains(searchTrimmed)) listView.items.add(it) }
+                }
+                else { listView.items = FXCollections.observableArrayList(DBService.allSortedQuizzes()) }
+            }
+            vbox.children.add(searchBar)
 
             // play quiz button
             val playQuizButton = Button("Play quiz!")
-            var playQuizNext = false
             playQuizButton.setOnAction {
-                if (playQuizNext) goToQuiz()
+                if (playQuizNext) showQuestionsInQuiz(user)
                 else playQuizNext = true
             }
             vbox.children.add(playQuizButton)
 
+            stage.show()
         }
-
-        fun goToQuiz() {}
     }
 }
