@@ -13,37 +13,60 @@ class Main : Application()
 {
     override fun start(stage: Stage)
     {
-        val hbox = HBox()
-        val scene = Scene(hbox)
+        val vbox = VBox()
+        vbox.style = MainMenu.BACKGROUND_COLOUR_STYLE
+        vbox.padding = Insets(15.0, 15.0, 100.0, 15.0)
+
+        val scene = Scene(vbox)
         stage.scene = scene
 
-        // left vbox
-        val leftVBox = VBox()
-        hbox.children.add(leftVBox)
-        val usernameLabel = Label("Username: \t")
-        leftVBox.children.add(usernameLabel)
+        stage.width = 1000.0
+        stage.height = 650.0
+        stage.isResizable = false
 
-        val passwordLabel = Label("Password: \t")
-        leftVBox.children.add(passwordLabel)
-
-        // center vbox
-        val centerVBox = VBox()
-        hbox.children.add(centerVBox)
-
+        // logo
+        val logoHBox = HBox()
         val logo = ImageView(COLLEGE_LOGO)
-        centerVBox.children.add(logo)
+        logo.fitHeight = 250.0
+        logo.fitWidth = 250.0
+        (0 until 17).forEach { logoHBox.children.add(Label("      ")) }
+        logoHBox.children.add(logo)
+        vbox.children.add(logoHBox)
 
+        // title
+        val titleHBox = HBox()
         val collegeLabel = Label("Farnborough 6th Form College Quiz Application")
-        centerVBox.children.add(collegeLabel)
+        collegeLabel.style = "-fx-font-family: Georgia; -fx-font-size: 20; -fx-underline: true;"
+        (0 until 13).forEach { titleHBox.children.add(Label("      ")) }
+        titleHBox.children.add(collegeLabel)
+        (0 until 2).forEach { vbox.children.add(Label("")) }
+        vbox.children.add(titleHBox)
+
+        // username
+        val usernameHBox = HBox()
+        (0 until 2).forEach { vbox.children.add(Label("")) }
+        vbox.children.add(usernameHBox)
+        val usernameLabel = Label("Username: \t")
+        (0 until 17).forEach { usernameHBox.children.add(Label("      ")) }
+        usernameHBox.children.add(usernameLabel)
 
         val userIDField = TextField()
         userIDField.promptText = "Please enter your college ID [E.g. 53475]"
-        centerVBox.children.add(userIDField)
+        usernameHBox.children.add(userIDField)
+
+        // password
+        val passwordHBox = HBox()
+        (0 until 2).forEach { vbox.children.add(Label("")) }
+        vbox.children.add(passwordHBox)
 
         val passwordField = PasswordField()
         passwordField.promptText = "Please enter your college password."
-        centerVBox.children.add(passwordField)
 
+        val passwordLabel = Label("Password: \t")
+        (0 until 17).forEach { passwordHBox.children.add(Label("      ")) }
+        passwordHBox.children.addAll(passwordLabel, passwordField)
+
+        val loginHBox = HBox()
         val loginButton = Button("Log In!")
         loginButton.setOnAction {
             if (DBService.userExists(userIDField.text.toInt(), passwordField.text.trim()))
@@ -53,7 +76,10 @@ class Main : Application()
             }
             else Alert(Alert.AlertType.ERROR, "Invalid college ID and/or password.\nRemember, college ID should be 5 digits long.").showAndWait()
         }
-        centerVBox.children.add(loginButton)
+        (0 until 22).forEach { loginHBox.children.add(Label("      ")) }
+        loginHBox.children.add(loginButton)
+        (0 until 2).forEach { vbox.children.add(Label("")) }
+        vbox.children.add(loginHBox)
 
         MainMenu.show(User(1, "AJ", "Trow", "hairygoat"))
         stage.close()
