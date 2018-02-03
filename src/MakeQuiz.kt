@@ -28,7 +28,7 @@ class MakeQuiz
             val middleHBox = HBox()
             val bottomHBox = HBox()
 
-            vbox.children.addAll(topHBox)//, middleHBox) ,bottomHBox)
+            vbox.children.addAll(topHBox)
             val scene = Scene(vbox)
             stage.scene = scene
 
@@ -62,7 +62,7 @@ class MakeQuiz
             // next button
             val nextButton = Button("Next!")
             nextButton.setOnAction {
-                DBService.writeQuizTitle(Quiz(-1, quizName.text))
+                //DBService.writeQuizTitle(Quiz(-1, quizName.text))
                 QuestionDesign.show(1, DBService.nextQuizID(), user); stage.close()
             }
 
