@@ -65,7 +65,7 @@ class FinishedPlaying
             noButton.setOnAction { stage.close() }
             yesNoHBox.children.add(noButton)
 
-            //DBService.saveScoreToDatabase(user, quizID, totalScore)
+            DBService.saveScoreToDatabase(user, quizID, totalScore)
 
             stage.show()
         }
