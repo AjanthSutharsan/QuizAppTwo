@@ -55,8 +55,10 @@ class Main : Application()
         }
         centerVBox.children.add(loginButton)
 
+        MainMenu.show(User(1, "AJ", "Trow", "hairygoat"))
+        stage.close()
         stage.show()
-        //MainMenu.show(User(1, "AJ", "Trow", "hairygoat"))
+
     }
 
     companion object
