@@ -14,7 +14,7 @@ class Main : Application()
     override fun start(stage: Stage)
     {
         val vbox = VBox()
-        vbox.style = MainMenu.BACKGROUND_COLOUR_STYLE
+        vbox.style = "-fx-background-color: #D1C4D6"
         vbox.padding = Insets(15.0, 15.0, 100.0, 15.0)
 
         val scene = Scene(vbox)
@@ -81,8 +81,6 @@ class Main : Application()
         (0 until 2).forEach { vbox.children.add(Label("")) }
         vbox.children.add(loginHBox)
 
-        MainMenu.show(User(1, "AJ", "Trow", "hairygoat"))
-        stage.close()
         stage.show()
 
     }

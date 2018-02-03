@@ -107,7 +107,7 @@ class MainMenu
                 rightVBox.children.add(padding)
             }
             val viewHighscoresButton = Button("View highscores!")
-            viewHighscoresButton.setOnAction { ViewHighScores.show(user) }
+            viewHighscoresButton.setOnAction { ViewHighScores.show(user); stage.close() }
             viewHighscoresButton.style = STYLE
             viewHighscoresButton.setMinSize(250.0, 150.0)
             rightVBox.children.add(viewHighscoresButton)
