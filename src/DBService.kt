@@ -1,4 +1,3 @@
-import javafx.collections.FXCollections
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -35,12 +34,20 @@ class DBService
             return 1
         }
 
+        fun getUserFromID(userID: Int): User
+        {
+            val userData = connection.linesFromQuery("SELECT * FROM Users WHERE userID = $userID")[0].split("\t")
+            return User(userData[0].toInt(), userData[1], userData[2], userData[3])
+        }
+
         fun allQuizNames(): ArrayList<String>
         {
             val quizNames = ArrayList<String>()
             connection.linesFromQuery("SELECT quizTitle FROM Quiz;").forEach { quizNames += it }
             return quizNames
         }
+
+        fun userExists(userID: Int, password: String) = connection.linesFromQuery("SELECT * FROM Users WHERE userID = $userID AND password = '$password';").isNotEmpty()
 
         fun getScoreData(quizID: Int): ArrayList<ScoreTableData>
         {

@@ -59,7 +59,6 @@ class ViewHighScores
             firstNameCol.cellValueFactory = PropertyValueFactory<ScoreTableData, String>("firstName")
             lastNameCol.cellValueFactory = PropertyValueFactory<ScoreTableData, String>("lastName")
             scoreCol.cellValueFactory = PropertyValueFactory<ScoreTableData, String>("score")
-            //table.items = FXCollections.observableArrayList(DBService.getScoreData(highscoreCombo.selectionModel.selectedItem.quizID))
 
             val displayButton = Button("Display!")
             displayButton.setOnAction {
